@@ -94,8 +94,6 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
     H = HEADER_H + max(len(sorted_repos), 1) * ROW_H + FOOTER_H
     BAR_X = 256
     BAR_MAX_W = 120
-    search_url = f"https://github.com/search?q=author%3A{username}+is%3Apr+is%3Amerged&type=pullrequests"
-
     # ── rows ──────────────────────────────────────────────────────────────
     rows: list[str] = []
     if not sorted_repos:
@@ -113,24 +111,20 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
             cy = y + ROW_H // 2
             bar_w = max(6, int((count / max_count) * BAR_MAX_W))
             label = repo if len(repo) <= 26 else repo[:23] + "…"
-            repo_url = f"https://github.com/{repo}"
 
             rows.append(f"""
-  <a href="{repo_url}">
-    <circle cx="{PAD + 11}" cy="{cy}" r="11" fill="{color}1a" stroke="{color}" stroke-width="1.5"/>
-    <text x="{PAD + 11}" y="{cy + 4}" text-anchor="middle"
-      font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="{color}">{initial}</text>
-    <text x="{PAD + 30}" y="{cy + 4}"
-      font-family="ui-monospace,SFMono-Regular,monospace" font-size="12" fill="#8b949e">{label}</text>
-    <rect x="{BAR_X}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" opacity="0.25"/>
-    <rect x="{BAR_X}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" opacity="0.55"/>
-    <text x="{BAR_X + bar_w + 8}" y="{cy + 5}"
-      font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e6edf3">{count}</text>
-  </a>""")
+  <circle cx="{PAD + 11}" cy="{cy}" r="11" fill="{color}1a" stroke="{color}" stroke-width="1.5"/>
+  <text x="{PAD + 11}" y="{cy + 4}" text-anchor="middle"
+    font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="{color}">{initial}</text>
+  <text x="{PAD + 30}" y="{cy + 4}"
+    font-family="ui-monospace,SFMono-Regular,monospace" font-size="12" fill="#8b949e">{label}</text>
+  <rect x="{BAR_X}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" opacity="0.25"/>
+  <rect x="{BAR_X}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" opacity="0.55"/>
+  <text x="{BAR_X + bar_w + 8}" y="{cy + 5}"
+    font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e6edf3">{count}</text>""")
 
     # ── assemble ──────────────────────────────────────────────────────────
-    return f"""<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    return f"""<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">
 
   <!-- card background -->
   <rect width="{W}" height="{H}" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
@@ -140,11 +134,9 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
     font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="600" fill="#e6edf3">Open Source Contributions</text>
 
   <!-- merged badge -->
-  <a href="{search_url}">
-    <rect x="{PAD}" y="34" width="56" height="18" rx="9" fill="#8957e51a" stroke="#8957e5" stroke-width="1"/>
-    <text x="{PAD + 28}" y="47" text-anchor="middle"
-      font-family="system-ui,sans-serif" font-size="10" fill="#d2a8ff">merged</text>
-  </a>
+  <rect x="{PAD}" y="34" width="56" height="18" rx="9" fill="#8957e51a" stroke="#8957e5" stroke-width="1"/>
+  <text x="{PAD + 28}" y="47" text-anchor="middle"
+    font-family="system-ui,sans-serif" font-size="10" fill="#d2a8ff">merged</text>
   <text x="{PAD + 66}" y="47"
     font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e6edf3">{total} PRs</text>
   <text x="{W - PAD}" y="47" text-anchor="end"
