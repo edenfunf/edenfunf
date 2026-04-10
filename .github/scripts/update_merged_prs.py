@@ -1,3 +1,4 @@
+import base64
 import os
 import argparse
 import requests
@@ -69,6 +70,22 @@ def org_color(org: str) -> str:
     return PALETTE[idx]
 
 
+def fetch_avatar_b64(org: str) -> str | None:
+    """Download org avatar and return as base64 data URI, or None on failure."""
+    try:
+        resp = requests.get(
+            f"https://github.com/{org}.png?size=40",
+            timeout=10,
+            allow_redirects=True,
+        )
+        resp.raise_for_status()
+        b64 = base64.b64encode(resp.content).decode()
+        mime = resp.headers.get("content-type", "image/png").split(";")[0]
+        return f"data:{mime};base64,{b64}"
+    except Exception:
+        return None
+
+
 def generate_svg(prs: list[dict], days: int, username: str) -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -94,6 +111,10 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
     H = HEADER_H + max(len(sorted_repos), 1) * ROW_H + FOOTER_H
     BAR_X = 256
     BAR_MAX_W = 120
+    # ── pre-fetch avatars (one request per unique org) ────────────────────
+    unique_orgs = list(dict.fromkeys(repo_org[r] for r, _ in sorted_repos))
+    avatars: dict[str, str | None] = {org: fetch_avatar_b64(org) for org in unique_orgs}
+
     # ── rows ──────────────────────────────────────────────────────────────
     rows: list[str] = []
     if not sorted_repos:
@@ -111,11 +132,27 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
             cy = y + ROW_H // 2
             bar_w = max(6, int((count / max_count) * BAR_MAX_W))
             label = repo if len(repo) <= 26 else repo[:23] + "…"
+            avatar_uri = avatars.get(org)
+
+            if avatar_uri:
+                icon = (
+                    f'<clipPath id="clip{i}">'
+                    f'<circle cx="{PAD + 11}" cy="{cy}" r="11"/>'
+                    f'</clipPath>'
+                    f'<image x="{PAD}" y="{cy - 11}" width="22" height="22"'
+                    f' href="{avatar_uri}" clip-path="url(#clip{i})"/>'
+                )
+            else:
+                icon = (
+                    f'<circle cx="{PAD + 11}" cy="{cy}" r="11"'
+                    f' fill="{color}" fill-opacity="0.1" stroke="{color}" stroke-width="1.5"/>'
+                    f'<text x="{PAD + 11}" y="{cy + 4}" text-anchor="middle"'
+                    f' font-family="system-ui,sans-serif" font-size="10" font-weight="700"'
+                    f' fill="{color}">{initial}</text>'
+                )
 
             rows.append(f"""
-  <circle cx="{PAD + 11}" cy="{cy}" r="11" fill="{color}" fill-opacity="0.1" stroke="{color}" stroke-width="1.5"/>
-  <text x="{PAD + 11}" y="{cy + 4}" text-anchor="middle"
-    font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="{color}">{initial}</text>
+  {icon}
   <text x="{PAD + 30}" y="{cy + 4}"
     font-family="ui-monospace,SFMono-Regular,monospace" font-size="12" fill="#8b949e">{label}</text>
   <rect x="{BAR_X}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" fill-opacity="0.25"/>
