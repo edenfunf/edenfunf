@@ -9,7 +9,6 @@ Machine learning & GPU systems · Student @ NFU
 ![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
 
----
 
 <!-- MERGED_PRS_START -->
 ![Open Source Contributions](merged-prs.svg)
