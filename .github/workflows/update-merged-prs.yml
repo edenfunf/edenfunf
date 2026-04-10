@@ -38,6 +38,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add README.md
-          git diff --staged --quiet || git commit -m "chore: update merged PRs"
+          git add README.md merged-prs.svg
+          git diff --staged --quiet || git commit -m "chore: update merged PRs card"
           git push
