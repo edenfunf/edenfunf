@@ -50,38 +50,43 @@ def fetch_merged_prs(username: str, token: str, days: int) -> list[dict]:
     return data["data"]["search"]["nodes"]
 
 
-def build_table(prs: list[dict], days: int) -> str:
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    header_lines = [
-        f"### Merged Pull Requests &nbsp;·&nbsp; Last {days} days",
-        f"<sub>Updated: {today}</sub>",
-        "",
-    ]
+def build_section(prs: list[dict], days: int) -> str:
+    count = len(prs)
+    search_url = f"https://github.com/search?q=author%3Aedenfunf+is%3Apr+is%3Amerged&type=pullrequests"
+
+    # Purple "merged" badge linking to PR search
+    badge = (
+        f'<a href="{search_url}">'
+        f'<img src="https://img.shields.io/badge/merged-{count}%20PRs-8957e5?style=flat-square&logo=git-merge&logoColor=white" alt="merged PRs">'
+        f"</a>"
+    )
 
     if not prs:
-        return "\n".join(header_lines) + "\n_No merged PRs in this period._"
+        return badge
 
-    table_lines = [
-        "| | Repository | Pull Request | Merged |",
-        "|:---:|:---|:---|:---:|",
-    ]
-
+    # Deduplicate orgs, preserve order
+    seen_orgs: set[str] = set()
+    org_logos: list[str] = []
     for pr in prs:
         org = pr["repository"]["owner"]["login"]
         repo = pr["repository"]["nameWithOwner"]
-        title = pr["title"].replace("|", "\\|")
-        url = pr["url"]
-        logo = f"https://github.com/{org}.png?size=20"
-        merged_month = pr["mergedAt"][:7]  # YYYY-MM
+        if org not in seen_orgs:
+            seen_orgs.add(org)
+            repo_url = f"https://github.com/{repo}"
+            logo = f"https://github.com/{org}.png?size=20"
+            org_logos.append(
+                f'<a href="{repo_url}">'
+                f'<img src="{logo}" width="20" alt="{org}" title="{org}">'
+                f"</a>"
+            )
 
-        table_lines.append(
-            f'| <img src="{logo}" width="20" alt="{org}"> '
-            f"| `{repo}` "
-            f"| [{title}]({url}) "
-            f"| {merged_month} |"
-        )
+    logos_line = " &nbsp; ".join(org_logos)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-    return "\n".join(header_lines + table_lines)
+    return (
+        f"{badge} &nbsp; {logos_line}\n"
+        f"<sub>last {days} days &nbsp;·&nbsp; {today}</sub>"
+    )
 
 
 def update_readme(table_content: str) -> None:
@@ -131,7 +136,7 @@ def main() -> None:
     prs = fetch_merged_prs(username, token, args.days)
     print(f"Found {len(prs)} merged PR(s)")
 
-    table = build_table(prs, args.days)
+    table = build_section(prs, args.days)
     update_readme(table)
     print("README.md updated successfully")
 
