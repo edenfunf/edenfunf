@@ -1,6 +1,6 @@
 ### Hi, I'm Eden 👋
 
-Machine learning & GPU systems · Student @ NFU
+Machine learning & GPU systems 
 
 ---
 
