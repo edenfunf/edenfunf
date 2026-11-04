@@ -2,7 +2,7 @@
 
 18-year-old developer from Taiwan 🇹🇼 who loves open source.
 
-🤖 **AI agents & harness engineering**: orchestration, review loops and guardrails for long-running agents<br>
+🤖 **AI agents & harness engineering**: multi-agent orchestration for long-running coding agents<br>
 🔌 **Embedded systems**: RISC-V, Edge AI, mmWave radar, ESP32 and Raspberry Pi
 
 ⭐ **1.8k stars** on ReelMimic &nbsp;·&nbsp; 🥇 **Gold**, Andes RISC-V Contest &nbsp;·&nbsp; 🥇 **Gold**, All Ring Tech Innovation Contest
