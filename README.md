@@ -17,7 +17,7 @@
 | **🏆 Nantou track winner**<br><sub>MODA Civic Action Hub 2026</sub> | **[AidFlow](https://github.com/edenfunf/aidflow)**: disaster reporting platform built with Nantou County Government. Citizens report without logging in, nearby reports merge into cases, and county staff triage them. <sub>[Demo site](https://aidflow.tw)</sub> |
 | **🏆 Merit Award**<br><sub>DIGITIMES GenAI Hackathon 2026</sub> | **[Family Avatar](https://github.com/edenfunf/tshu-pinn-brack)**: grandparents speak Taiwanese, and an AI family member answers on video in ~2 s. Runs end to end on one A10G GPU. |
 | **🏆 Winning Team**<br><sub>MODA Civic Tech Challenge</sub> | **[ResQLink](https://github.com/edenfunf/ResQLink)**: describe a disaster in one sentence; an AI agent picks from 72 modules and generates the whole relief system. |
-| **📈 1.72× tokens/s**<br><sub>−42% cost per token</sub> | **[TuneForge](https://github.com/edenfunf/tuneforge)**: tunes LLM inference on Arm64 cloud. Claude reads hardware counters and proposes the next experiment; the harness changes one setting at a time, measures it, and rejects anything that hurts model quality. |
+| **📈 1.72× tokens/s**<br><sub>−42% cost per token</sub> | **[TuneForge](https://github.com/edenfunf/tuneforge)**: tunes LLM inference on Arm64 cloud. An AI agent reads hardware counters and proposes the next experiment; the harness changes one setting at a time, measures it, and rejects anything that hurts model quality. |
 | **📦 `pip install promptc`** | **[promptc](https://github.com/edenfunf/promptc)**: grades your Claude Code setup (A–F) for duplicated skills and wasted context. |
 
 ### 🌍 Open source
