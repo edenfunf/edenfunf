@@ -3,17 +3,17 @@
 I build AI agents and automation tools for everyday problems, and I fix the open-source infrastructure they run on.<br>
 Python · TypeScript · CUDA C++ · Taiwan 🇹🇼
 
-**149 merged PRs** in OpenClaw, Microsoft & NVIDIA &nbsp;·&nbsp; **⭐ 1.8k** on ReelMimic &nbsp;·&nbsp; **2 hackathon awards**
+**149 merged PRs** in OpenClaw, Microsoft & NVIDIA &nbsp;·&nbsp; **⭐ 1.8k** on ReelMimic &nbsp;·&nbsp; **3 competition awards**
 
 ### 🚀 Things I built
 
 | Highlight | Project |
 |:--|:--|
-| **⭐ 1.8k stars** | **[ReelMimic](https://github.com/edenfunf/reelmimic)**: show it a video you love, get a new one in the same style. Claude Code or Codex plans, builds and reviews it with you. |
+| **⭐ 1.8k stars** | **[ReelMimic](https://github.com/edenfunf/reelmimic)**: a multi-agent harness that turns Claude Code or Codex into a video crew. Show it a video you love: up to 6 agents build a new one in the same style, and a fresh agent reviews every shot, so no agent grades its own work. |
+| **🏆 Nantou track winner**<br><sub>MODA Civic Action Hub 2026 · 4 of 28 finalists</sub> | **[AidFlow](https://github.com/edenfunf/aidflow)**: disaster reporting platform built with Nantou County Government. Citizens report without logging in, nearby reports merge into cases, and county staff triage them. <sub>[Demo site](https://aidflow.tw)</sub> |
 | **🏆 Merit Award**<br><sub>DIGITIMES GenAI Hackathon 2026</sub> | **[Family Avatar](https://github.com/edenfunf/tshu-pinn-brack)**: grandparents speak Taiwanese, and an AI family member answers on video in ~2 s. Runs end to end on one A10G GPU. |
 | **🏆 Winning Team**<br><sub>MODA Civic Tech Challenge</sub> | **[ResQLink](https://github.com/edenfunf/ResQLink)**: describe a disaster in one sentence; an AI agent picks from 72 modules and generates the whole relief system. |
-| **🌐 Live**<br><sub>[aidflow.tw](https://aidflow.tw)</sub> | **[AidFlow](https://github.com/edenfunf/aidflow)**: disaster reporting platform shaped with Nantou County Government. Public reports, auto-merged cases, admin console. |
-| **📈 +209% throughput** | **[TuneForge](https://github.com/edenfunf/tuneforge)**: an agent that tunes LLM inference on Arm64 cloud, one measured change at a time, and writes a replayable recipe. |
+| **📈 1.72× tokens/s**<br><sub>−42% cost per token</sub> | **[TuneForge](https://github.com/edenfunf/tuneforge)**: tunes LLM inference on Arm64 cloud. Claude reads hardware counters and proposes the next experiment; the harness changes one setting at a time, measures it, and rejects anything that hurts model quality. |
 | **📦 `pip install promptc`** | **[promptc](https://github.com/edenfunf/promptc)**: grades your Claude Code setup (A–F) for duplicated skills and wasted context. |
 
 ### 🌍 Open source
