@@ -1,14 +1,12 @@
 ## Hi, I'm Eden 👋
 
-I'm an 18-year-old developer from Taiwan 🇹🇼 who loves open source.
-
-- 🤖 **AI agents & harness engineering**: harnesses that let Claude Code and Codex finish long jobs, with parallel agents, fresh-context reviewers and evidence-gated fixes ([ReelMimic](https://github.com/edenfunf/reelmimic))
-- 🦞 **Agent infrastructure in open source**: top external contributor to OpenClaw's LINE channel and Microsoft APM, contributor to NVIDIA's CUDA libraries
-- 🔌 **Embedded systems**: mmWave radar and Edge AI devices, gold medal at the Andes RISC-V Contest
+I'm an 18-year-old developer from Taiwan 🇹🇼 who loves open source.<br>
+I focus on **AI agents and harness engineering**: the orchestration, review loops and guardrails that let agents handle long, real-world work without falling apart. I also build **embedded systems** with mmWave radar and Edge AI.
 
 **149 merged PRs** in OpenClaw, Microsoft & NVIDIA &nbsp;·&nbsp; **⭐ 1.8k** on ReelMimic
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) ![C++](https://img.shields.io/badge/C++-00599C?style=flat-square&logo=cplusplus&logoColor=white) ![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white) ![C](https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=c&logoColor=black) ![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?style=flat-square&logo=claude&logoColor=white)
+![C++](https://img.shields.io/badge/C++-00599C?style=flat-square&logo=cplusplus&logoColor=white) ![C](https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=c&logoColor=black) ![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+
 ### 🚀 Things I built
 
 | Highlight | Project |
