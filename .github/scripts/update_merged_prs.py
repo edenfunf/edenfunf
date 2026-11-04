@@ -33,7 +33,7 @@ query($q: String!, $after: String) {
 
 START_MARKER = "<!-- MERGED_PRS_START -->"
 END_MARKER = "<!-- MERGED_PRS_END -->"
-MAX_ROWS = 6
+MAX_REPOS = 10  # shown in two columns
 
 # Color palette for org circles
 PALETTE = [
@@ -116,19 +116,23 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
     sorted_repos = sorted(repo_counts.items(), key=lambda x: -x[1])
     max_count = max(repo_counts.values()) if repo_counts else 1
     total = len(prs)
-    hidden = sorted_repos[MAX_ROWS:]
-    sorted_repos = sorted_repos[:MAX_ROWS]
+    hidden = sorted_repos[MAX_REPOS:]
+    sorted_repos = sorted_repos[:MAX_REPOS]
     period = "all time" if days <= 0 else f"last {days} days"
 
-    # Layout constants
-    W = 440
+    # Layout: two columns, filled top to bottom then left to right
+    W = 760
     PAD = 20
+    GAP = 30
+    COL_W = (W - 2 * PAD - GAP) // 2
     HEADER_H = 62
     ROW_H = 38
+    rows_per_col = max(1, -(-len(sorted_repos) // 2))
     FOOTER_H = 30 + (ROW_H // 2 if hidden else 0)
-    H = HEADER_H + max(len(sorted_repos), 1) * ROW_H + FOOTER_H
-    BAR_X = 256
-    BAR_MAX_W = 120
+    H = HEADER_H + rows_per_col * ROW_H + FOOTER_H
+    LABEL_DX = 30
+    BAR_DX = 200
+    BAR_MAX_W = 100
     # ── pre-fetch avatars (one request per unique org) ────────────────────
     unique_orgs = list(dict.fromkeys(repo_org[r] for r, _ in sorted_repos))
     avatars: dict[str, str | None] = {org: fetch_avatar_b64(org) for org in unique_orgs}
@@ -146,43 +150,45 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
             org = repo_org[repo]
             color = org_color(org)
             initial = org[0].upper()
-            y = HEADER_H + i * ROW_H
+            col, row = divmod(i, rows_per_col)
+            x0 = PAD + col * (COL_W + GAP)
+            y = HEADER_H + row * ROW_H
             cy = y + ROW_H // 2
             bar_w = max(6, int((count / max_count) * BAR_MAX_W))
-            label = repo if len(repo) <= 26 else repo[:23] + "…"
+            label = repo if len(repo) <= 23 else repo[:22] + "…"
             avatar_uri = avatars.get(org)
 
             if avatar_uri:
                 icon = (
                     f'<clipPath id="clip{i}">'
-                    f'<circle cx="{PAD + 11}" cy="{cy}" r="11"/>'
+                    f'<circle cx="{x0 + 11}" cy="{cy}" r="11"/>'
                     f'</clipPath>'
-                    f'<image x="{PAD}" y="{cy - 11}" width="22" height="22"'
+                    f'<image x="{x0}" y="{cy - 11}" width="22" height="22"'
                     f' href="{avatar_uri}" clip-path="url(#clip{i})"/>'
                 )
             else:
                 icon = (
-                    f'<circle cx="{PAD + 11}" cy="{cy}" r="11"'
+                    f'<circle cx="{x0 + 11}" cy="{cy}" r="11"'
                     f' fill="{color}" fill-opacity="0.1" stroke="{color}" stroke-width="1.5"/>'
-                    f'<text x="{PAD + 11}" y="{cy + 4}" text-anchor="middle"'
+                    f'<text x="{x0 + 11}" y="{cy + 4}" text-anchor="middle"'
                     f' font-family="system-ui,sans-serif" font-size="10" font-weight="700"'
                     f' fill="{color}">{initial}</text>'
                 )
 
             rows.append(f"""
   {icon}
-  <text x="{PAD + 30}" y="{cy + 4}"
+  <text x="{x0 + LABEL_DX}" y="{cy + 4}"
     font-family="ui-monospace,SFMono-Regular,monospace" font-size="12" fill="#8b949e">{label}</text>
-  <rect x="{BAR_X}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" fill-opacity="0.25"/>
-  <rect x="{BAR_X}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" fill-opacity="0.55"/>
-  <text x="{BAR_X + bar_w + 8}" y="{cy + 5}"
+  <rect x="{x0 + BAR_DX}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" fill-opacity="0.25"/>
+  <rect x="{x0 + BAR_DX}" y="{cy - 7}" width="{bar_w}" height="14" rx="3" fill="{color}" fill-opacity="0.55"/>
+  <text x="{x0 + BAR_DX + bar_w + 8}" y="{cy + 5}"
     font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e6edf3">{count}</text>""")
 
     more_line = ""
     if hidden:
         more_prs = sum(c for _, c in hidden)
         more_line = (
-            f'<text x="{PAD}" y="{HEADER_H + len(sorted_repos) * ROW_H + 12}" '
+            f'<text x="{PAD}" y="{HEADER_H + rows_per_col * ROW_H + 12}" '
             f'font-family="system-ui,sans-serif" font-size="11" fill="#8b949e">'
             f"+ {len(hidden)} more repos ({more_prs} PRs)</text>"
         )
@@ -208,6 +214,8 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
 
   <!-- divider -->
   <line x1="{PAD}" y1="{HEADER_H - 4}" x2="{W - PAD}" y2="{HEADER_H - 4}" stroke="#21262d" stroke-width="1"/>
+
+  <line x1="{PAD + COL_W + GAP // 2}" y1="{HEADER_H + 6}" x2="{PAD + COL_W + GAP // 2}" y2="{HEADER_H + rows_per_col * ROW_H - 6}" stroke="#21262d" stroke-width="1"/>
 
   {"".join(rows)}
 
