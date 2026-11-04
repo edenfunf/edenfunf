@@ -1,4 +1,5 @@
 import base64
+import hashlib
 import os
 import argparse
 import requests
@@ -228,7 +229,7 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
 """
 
 
-def update_readme(svg_filename: str) -> None:
+def update_readme(svg_filename: str, svg: str) -> None:
     readme_path = "README.md"
     with open(readme_path, "r", encoding="utf-8") as f:
         content = f.read()
@@ -238,7 +239,9 @@ def update_readme(svg_filename: str) -> None:
             f"README.md is missing markers:\n  {START_MARKER}\n  {END_MARKER}"
         )
 
-    replacement = f"{START_MARKER}\n![Open Source Contributions]({svg_filename})\n{END_MARKER}"
+    # A version query busts browser/CDN caches whenever the card changes
+    version = hashlib.sha1(svg.encode("utf-8")).hexdigest()[:8]
+    replacement = f"{START_MARKER}\n![Open Source Contributions]({svg_filename}?v={version})\n{END_MARKER}"
     start = content.index(START_MARKER)
     end = content.index(END_MARKER) + len(END_MARKER)
 
@@ -269,7 +272,7 @@ def main() -> None:
         f.write(svg)
     print(f"Generated {svg_filename}")
 
-    update_readme(svg_filename)
+    update_readme(svg_filename, svg)
     print("README.md updated successfully")
 
 

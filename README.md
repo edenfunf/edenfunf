@@ -32,7 +32,7 @@ Python · TypeScript · CUDA C++
 <br>
 
 <!-- MERGED_PRS_START -->
-![Open Source Contributions](merged-prs.svg)
+![Open Source Contributions](merged-prs.svg?v=a512aa0d)
 <!-- MERGED_PRS_END -->
 
 </details>
