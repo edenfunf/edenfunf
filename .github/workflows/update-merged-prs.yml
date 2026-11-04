@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       days:
-        description: 'How many days to look back (default: 30)'
+        description: 'How many days to look back (0 = all time)'
         required: false
-        default: '30'
+        default: '0'
 
 jobs:
   update:
@@ -32,7 +32,7 @@ jobs:
           GITHUB_USERNAME: edenfunf
         run: |
           python .github/scripts/update_merged_prs.py \
-            --days ${{ github.event.inputs.days || 30 }}
+            --days ${{ github.event.inputs.days || 0 }}
 
       - name: Commit changes
         run: |

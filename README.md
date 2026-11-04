@@ -20,12 +20,22 @@ Python · TypeScript · CUDA C++
 
 | Project | Merged PRs | What I worked on |
 |:--|:--:|:--|
-| **[OpenClaw](https://github.com/openclaw/openclaw)** <sub>⭐ 394k</sub> | [**81**](https://github.com/openclaw/openclaw/pulls?q=is%3Apr+author%3Aedenfunf+is%3Amerged) | 55 PRs on the LINE channel: no lost messages, retries, Flex cards, group mentions, tap-to-answer buttons |
-| **[Microsoft APM](https://github.com/microsoft/apm)** <sub>⭐ 4.2k</sub> | [**48**](https://github.com/microsoft/apm/pulls?q=is%3Apr+author%3Aedenfunf+is%3Amerged) | MCP config, GitHub Enterprise auth, Windows encoding, the `marketplace audit` command |
-| **[NVIDIA CCCL](https://github.com/NVIDIA/cccl)** · **[TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM)** | [**15**](https://github.com/search?q=is%3Apr+author%3Aedenfunf+is%3Amerged+org%3ANVIDIA&type=pullrequests) | Parallel `is_heap_until`, single-pass `is_partitioned`, async polling instead of busy-wait |
-| **[llama.cpp](https://github.com/ggml-org/llama.cpp)** · **[RAGFlow](https://github.com/infiniflow/ragflow)** · **[openai-python](https://github.com/openai/openai-python)** · more | [**5**](https://github.com/search?q=is%3Apr+author%3Aedenfunf+is%3Amerged+-user%3Aedenfunf+-org%3Aopenclaw+-org%3Amicrosoft+-org%3ANVIDIA&type=pullrequests) | CUDA norm kernels past 65,535 channels, leaked DB connections, streaming fixes |
+| <img src="https://github.com/openclaw.png?size=40" width="16" height="16">&nbsp;**[OpenClaw](https://github.com/openclaw/openclaw)** <sub>⭐ 394k</sub> | [**81**](https://github.com/openclaw/openclaw/pulls?q=is%3Apr+author%3Aedenfunf+is%3Amerged) | 55 PRs on the LINE channel: no lost messages, retries, Flex cards, group mentions, tap-to-answer buttons |
+| <img src="https://github.com/microsoft.png?size=40" width="16" height="16">&nbsp;**[Microsoft APM](https://github.com/microsoft/apm)** <sub>⭐ 4.2k</sub> | [**48**](https://github.com/microsoft/apm/pulls?q=is%3Apr+author%3Aedenfunf+is%3Amerged) | MCP config, GitHub Enterprise auth, Windows encoding, the `marketplace audit` command |
+| <img src="https://github.com/NVIDIA.png?size=40" width="16" height="16">&nbsp;**[NVIDIA CCCL](https://github.com/NVIDIA/cccl)** · **[TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM)** | [**15**](https://github.com/search?q=is%3Apr+author%3Aedenfunf+is%3Amerged+org%3ANVIDIA&type=pullrequests) | Parallel `is_heap_until`, single-pass `is_partitioned`, async polling instead of busy-wait |
+| <img src="https://github.com/ggml-org.png?size=40" width="16" height="16">&nbsp;**[llama.cpp](https://github.com/ggml-org/llama.cpp)** · <img src="https://github.com/infiniflow.png?size=40" width="16" height="16">&nbsp;**[RAGFlow](https://github.com/infiniflow/ragflow)** · <img src="https://github.com/openai.png?size=40" width="16" height="16">&nbsp;**[openai-python](https://github.com/openai/openai-python)** · more | [**5**](https://github.com/search?q=is%3Apr+author%3Aedenfunf+is%3Amerged+-user%3Aedenfunf+-org%3Aopenclaw+-org%3Amicrosoft+-org%3ANVIDIA&type=pullrequests) | CUDA norm kernels past 65,535 channels, leaked DB connections, streaming fixes |
 
 → [See all merged PRs](https://github.com/search?q=is%3Apr+author%3Aedenfunf+is%3Amerged+-user%3Aedenfunf&type=pullrequests&s=created&o=desc)
+
+<details>
+<summary><b>All merged PRs by repo</b> (auto-updated weekly)</summary>
+<br>
+
+<!-- MERGED_PRS_START -->
+![Open Source Contributions](merged-prs.svg)
+<!-- MERGED_PRS_END -->
+
+</details>
 
 ### 📫 Contact
 

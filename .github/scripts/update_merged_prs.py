@@ -8,8 +8,12 @@ from datetime import datetime, timedelta, timezone
 GRAPHQL_URL = "https://api.github.com/graphql"
 
 QUERY = """
-query($q: String!) {
-  search(query: $q, type: ISSUE, first: 30) {
+query($q: String!, $after: String) {
+  search(query: $q, type: ISSUE, first: 100, after: $after) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     nodes {
       ... on PullRequest {
         title
@@ -29,6 +33,7 @@ query($q: String!) {
 
 START_MARKER = "<!-- MERGED_PRS_START -->"
 END_MARKER = "<!-- MERGED_PRS_END -->"
+MAX_ROWS = 6
 
 # Color palette for org circles
 PALETTE = [
@@ -46,23 +51,33 @@ PALETTE = [
 
 
 def fetch_merged_prs(username: str, token: str, days: int) -> list[dict]:
-    since = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
-    search_query = f"author:{username} is:pr is:merged merged:>{since}"
+    """Merged PRs to other people's repos. days=0 means all time."""
+    search_query = f"author:{username} is:pr is:merged -user:{username}"
+    if days > 0:
+        since = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
+        search_query += f" merged:>{since}"
 
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.post(
-        GRAPHQL_URL,
-        json={"query": QUERY, "variables": {"q": search_query}},
-        headers=headers,
-        timeout=30,
-    )
-    response.raise_for_status()
+    prs: list[dict] = []
+    after = None
+    while True:
+        response = requests.post(
+            GRAPHQL_URL,
+            json={"query": QUERY, "variables": {"q": search_query, "after": after}},
+            headers=headers,
+            timeout=30,
+        )
+        response.raise_for_status()
 
-    data = response.json()
-    if "errors" in data:
-        raise RuntimeError(f"GraphQL errors: {data['errors']}")
+        data = response.json()
+        if "errors" in data:
+            raise RuntimeError(f"GraphQL errors: {data['errors']}")
 
-    return data["data"]["search"]["nodes"]
+        search = data["data"]["search"]
+        prs.extend(n for n in search["nodes"] if n)
+        if not search["pageInfo"]["hasNextPage"]:
+            return prs
+        after = search["pageInfo"]["endCursor"]
 
 
 def org_color(org: str) -> str:
@@ -101,13 +116,16 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
     sorted_repos = sorted(repo_counts.items(), key=lambda x: -x[1])
     max_count = max(repo_counts.values()) if repo_counts else 1
     total = len(prs)
+    hidden = sorted_repos[MAX_ROWS:]
+    sorted_repos = sorted_repos[:MAX_ROWS]
+    period = "all time" if days <= 0 else f"last {days} days"
 
     # Layout constants
     W = 440
     PAD = 20
     HEADER_H = 62
     ROW_H = 38
-    FOOTER_H = 30
+    FOOTER_H = 30 + (ROW_H // 2 if hidden else 0)
     H = HEADER_H + max(len(sorted_repos), 1) * ROW_H + FOOTER_H
     BAR_X = 256
     BAR_MAX_W = 120
@@ -121,7 +139,7 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
         rows.append(
             f'<text x="{PAD}" y="{HEADER_H + 22}" '
             f'font-family="system-ui,sans-serif" font-size="12" fill="#484f58">'
-            f"No merged PRs in this period.</text>"
+            f"No merged PRs yet.</text>"
         )
     else:
         for i, (repo, count) in enumerate(sorted_repos):
@@ -160,6 +178,15 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
   <text x="{BAR_X + bar_w + 8}" y="{cy + 5}"
     font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e6edf3">{count}</text>""")
 
+    more_line = ""
+    if hidden:
+        more_prs = sum(c for _, c in hidden)
+        more_line = (
+            f'<text x="{PAD}" y="{HEADER_H + len(sorted_repos) * ROW_H + 12}" '
+            f'font-family="system-ui,sans-serif" font-size="11" fill="#8b949e">'
+            f"+ {len(hidden)} more repos ({more_prs} PRs)</text>"
+        )
+
     # ── assemble ──────────────────────────────────────────────────────────
     return f"""<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">
 
@@ -177,12 +204,14 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
   <text x="{PAD + 66}" y="47"
     font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e6edf3">{total} PRs</text>
   <text x="{W - PAD}" y="47" text-anchor="end"
-    font-family="system-ui,sans-serif" font-size="11" fill="#484f58">last {days} days</text>
+    font-family="system-ui,sans-serif" font-size="11" fill="#484f58">{period}</text>
 
   <!-- divider -->
   <line x1="{PAD}" y1="{HEADER_H - 4}" x2="{W - PAD}" y2="{HEADER_H - 4}" stroke="#21262d" stroke-width="1"/>
 
   {"".join(rows)}
+
+  {more_line}
 
   <!-- footer -->
   <text x="{W - PAD}" y="{H - 10}" text-anchor="end"
@@ -211,8 +240,8 @@ def update_readme(svg_filename: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Update README with merged PRs SVG card")
-    parser.add_argument("--days", type=int, default=30,
-                        help="Number of days to look back (default: 30)")
+    parser.add_argument("--days", type=int, default=0,
+                        help="Number of days to look back (default: 0 = all time)")
     args = parser.parse_args()
 
     username = os.environ.get("GITHUB_USERNAME", "").strip()
@@ -221,7 +250,7 @@ def main() -> None:
     if not username or not token:
         raise EnvironmentError("GITHUB_USERNAME and GITHUB_TOKEN must be set")
 
-    print(f"Fetching merged PRs for @{username} in the last {args.days} days...")
+    print(f"Fetching merged PRs for @{username} ({'all time' if args.days <= 0 else f'last {args.days} days'})...")
     prs = fetch_merged_prs(username, token, args.days)
     print(f"Found {len(prs)} merged PR(s)")
 
