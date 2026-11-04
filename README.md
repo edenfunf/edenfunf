@@ -5,7 +5,7 @@
 🤖 **AI agents & harness engineering**: multi-agent orchestration for long-running coding agents<br>
 🔌 **Embedded systems**: RISC-V, Edge AI, mmWave radar, ESP32 and Raspberry Pi
 
-⭐ **1.8k stars** on ReelMimic &nbsp;·&nbsp; 🥇 **Gold**, Andes RISC-V Contest &nbsp;·&nbsp; 🥇 **Gold**, All Ring Tech Innovation Contest
+🥇 **Gold**, Andes RISC-V Contest &nbsp;·&nbsp; 🥇 **Gold**, All Ring Tech Innovation Contest
 
 ![C++](https://img.shields.io/badge/C++-00599C?style=flat-square&logo=cplusplus&logoColor=white) ![C](https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=c&logoColor=black) ![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 
@@ -13,7 +13,7 @@
 
 | Highlight | Project |
 |:--|:--|
-| **⭐ 1.8k stars**<br><sub>#1 on GitPop JavaScript weekly</sub> | **[ReelMimic](https://github.com/edenfunf/reelmimic)**: a multi-agent harness that turns Claude Code or Codex into a video crew. Show it a video you love: up to 6 agents build a new one in the same style, and a fresh agent reviews every shot, so no agent grades its own work. |
+| **🔥 #1 on GitPop**<br><sub>JavaScript weekly trending</sub> | **[ReelMimic](https://github.com/edenfunf/reelmimic)**: a multi-agent harness that turns Claude Code or Codex into a video crew. Show it a video you love: up to 6 agents build a new one in the same style, and a fresh agent reviews every shot, so no agent grades its own work. |
 | **🏆 Nantou track winner**<br><sub>MODA Civic Action Hub 2026</sub> | **[AidFlow](https://github.com/edenfunf/aidflow)**: disaster reporting platform built with Nantou County Government. Citizens report without logging in, nearby reports merge into cases, and county staff triage them. <sub>[Demo site](https://aidflow.tw)</sub> |
 | **🏆 Merit Award**<br><sub>DIGITIMES GenAI Hackathon 2026</sub> | **[Family Avatar](https://github.com/edenfunf/tshu-pinn-brack)**: grandparents speak Taiwanese, and an AI family member answers on video in ~2 s. Runs end to end on one A10G GPU. |
 | **🏆 Winning Team**<br><sub>MODA Civic Tech Challenge</sub> | **[ResQLink](https://github.com/edenfunf/ResQLink)**: describe a disaster in one sentence; an AI agent picks from 72 modules and generates the whole relief system. |
