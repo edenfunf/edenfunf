@@ -239,9 +239,13 @@ def update_readme(svg_filename: str, svg: str) -> None:
             f"README.md is missing markers:\n  {START_MARKER}\n  {END_MARKER}"
         )
 
-    # A version query busts browser/CDN caches whenever the card changes
+    # Link the raw file directly with a version query so caches refresh whenever
+    # the card changes. A relative link would redirect to raw.githubusercontent.com
+    # and drop the query, leaving browsers on the old cached image.
     version = hashlib.sha1(svg.encode("utf-8")).hexdigest()[:8]
-    replacement = f"{START_MARKER}\n![Open Source Contributions]({svg_filename}?v={version})\n{END_MARKER}"
+    repo = os.environ.get("GITHUB_REPOSITORY") or f"{os.environ.get('GITHUB_USERNAME', '')}/{os.environ.get('GITHUB_USERNAME', '')}"
+    url = f"https://raw.githubusercontent.com/{repo}/main/{svg_filename}?v={version}"
+    replacement = f"{START_MARKER}\n![Open Source Contributions]({url})\n{END_MARKER}"
     start = content.index(START_MARKER)
     end = content.index(END_MARKER) + len(END_MARKER)
 
