@@ -35,6 +35,8 @@ query($q: String!, $after: String) {
 START_MARKER = "<!-- MERGED_PRS_START -->"
 END_MARKER = "<!-- MERGED_PRS_END -->"
 MAX_REPOS = 10  # shown in two columns
+# Still counted in the total, just not listed on the card
+SKIP_REPOS = {"bestian/askit-hono"}
 
 # Color palette for org circles
 PALETTE = [
@@ -114,7 +116,10 @@ def generate_svg(prs: list[dict], days: int, username: str) -> str:
         repo_counts[repo] = repo_counts.get(repo, 0) + 1
         repo_org[repo] = org
 
-    sorted_repos = sorted(repo_counts.items(), key=lambda x: -x[1])
+    sorted_repos = sorted(
+        ((r, c) for r, c in repo_counts.items() if r not in SKIP_REPOS),
+        key=lambda x: -x[1],
+    )
     max_count = max(repo_counts.values()) if repo_counts else 1
     total = len(prs)
     hidden = sorted_repos[MAX_REPOS:]

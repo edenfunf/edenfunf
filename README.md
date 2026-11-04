@@ -32,7 +32,7 @@ Python · TypeScript · CUDA C++
 <br>
 
 <!-- MERGED_PRS_START -->
-![Open Source Contributions](https://raw.githubusercontent.com/edenfunf/edenfunf/main/merged-prs.svg?v=a512aa0d)
+![Open Source Contributions](https://raw.githubusercontent.com/edenfunf/edenfunf/main/merged-prs.svg?v=35039a9b)
 <!-- MERGED_PRS_END -->
 
 </details>
