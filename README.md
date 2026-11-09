@@ -36,7 +36,7 @@
 <br>
 
 <!-- MERGED_PRS_START -->
-![Open Source Contributions](https://raw.githubusercontent.com/edenfunf/edenfunf/main/merged-prs.svg?v=35039a9b)
+![Open Source Contributions](https://raw.githubusercontent.com/edenfunf/edenfunf/main/merged-prs.svg?v=e18114c8)
 <!-- MERGED_PRS_END -->
 
 </details>
